@@ -1,9 +1,12 @@
 export const colors = {
-  backgroundColor: "#3b021f",
-  buttonColor: "#72063c",
-  buttonRippleColor: "#640233",
   white: "#FFF",
-  borderCOlor: "#DDB52F",
-  mainBackgroundColor: "#ddb52f",
   appGradientColors: ["#4e0329", "#ddb52f"],
+  primary: {
+    500: "#72063c",
+    600: "#640233",
+    800: "#3b021f",
+  },
+  accent: {
+    500: "#ddb52f",
+  },
 };
