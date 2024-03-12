@@ -11,7 +11,6 @@ export function GuessContainer({ number }) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 40,
     borderWidth: 4,
     borderColor: colors.accent[500],
     alignItems: "center",

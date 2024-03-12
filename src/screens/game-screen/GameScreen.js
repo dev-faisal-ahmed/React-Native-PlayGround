@@ -1,9 +1,11 @@
-import { Title } from "../../components/Title";
-import { StyleSheet, View, Alert } from "react-native";
+import { Title } from "../../components/ui/Title";
+import { StyleSheet, View, Alert, FlatList, Text } from "react-native";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GuessContainer } from "../../components/game/GuessContainer";
-import { PrimaryButton } from "../../components/PrimaryButton";
+import { PrimaryButton } from "../../components/ui/PrimaryButton";
 import { SCREENS } from "../../data/screens";
+import { Card } from "../../components/ui/Card";
+import { GuessLog } from "../../components/game/GuessLog";
 
 const DIRECTION = {
   HIGH: "HIGH",
@@ -12,7 +14,7 @@ const DIRECTION = {
 
 export function GameScreen({ pickedNumber, updateScreen }) {
   const minRef = useRef(0);
-  const maxRef = useRef(99);
+  const maxRef = useRef(999);
 
   const guess = useCallback(
     () => Math.floor(Math.random() * (maxRef.current - minRef.current)) + minRef.current,
@@ -23,7 +25,9 @@ export function GameScreen({ pickedNumber, updateScreen }) {
   const [logs, setLogs] = useState([]);
 
   const updateGuess = () => {
-    setGuessedNumber(guess());
+    const guessed = guess();
+    setGuessedNumber(guessed);
+    setLogs((prev) => [guessed, ...prev]);
   };
 
   useEffect(() => {
@@ -55,14 +59,26 @@ export function GameScreen({ pickedNumber, updateScreen }) {
   return (
     <View style={styles.screen}>
       <Title>Your Guess! </Title>
-      <GuessContainer number={guessedNumber} />
-      <View style={{ flexDirection: "row", marginTop: 15 }}>
-        <View style={{ flex: 1 }}>
-          <PrimaryButton onPress={() => handleDirection(DIRECTION.HIGH)}>Guess Higher</PrimaryButton>
+      <Card customStyles={{ paddingVertical: 30 }}>
+        <GuessContainer number={guessedNumber} />
+        <View style={{ flexDirection: "row", marginTop: 40 }}>
+          <View style={{ flex: 1 }}>
+            <PrimaryButton onPress={() => handleDirection(DIRECTION.HIGH)}>Guess Higher</PrimaryButton>
+          </View>
+          <View style={{ flex: 1 }}>
+            <PrimaryButton onPress={() => handleDirection(DIRECTION.LOW)}>Guess Lower</PrimaryButton>
+          </View>
         </View>
-        <View style={{ flex: 1 }}>
-          <PrimaryButton onPress={() => handleDirection(DIRECTION.LOW)}>Guess Lower</PrimaryButton>
-        </View>
+      </Card>
+
+      <View style={{ marginTop: 20, paddingBottom: 20, flex: 1 }}>
+        <FlatList
+          data={logs}
+          renderItem={(itemData) => (
+            <GuessLog guessNumber={logs.length - itemData.index} guess={itemData.item} />
+          )}
+          keyExtractor={(item) => item}
+        />
       </View>
     </View>
   );

@@ -6,6 +6,7 @@ import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { SCREENS } from "./src/data/screens";
 import { GameScreen } from "./src/screens/game-screen/GameScreen";
+import { GameOverScreen } from "./src/screens/game-over-screen/GameOverScreen";
 
 export default function App() {
   const [pickedNumber, setPickedNumber] = useState(null);
@@ -19,6 +20,12 @@ export default function App() {
     setPickedNumber(number);
   };
 
+  const currentScreen = {
+    [SCREENS.START_SCREEN]: <StartGameScreen updateNumber={updateNumber} updateScreen={updateScreen} />,
+    [SCREENS.GAME_SCREEN]: <GameScreen pickedNumber={pickedNumber} updateScreen={updateScreen} />,
+    [SCREENS.GAME_OVER_SCREEN]: <GameOverScreen updateScreen={updateScreen} />,
+  };
+
   return (
     <>
       <StatusBar style="light" />
@@ -29,14 +36,7 @@ export default function App() {
           style={styles.rootScreen}
           imageStyle={{ opacity: 0.1 }}
         >
-          <SafeAreaView style={styles.rootScreen}>
-            {screen === SCREENS.START_SCREEN && (
-              <StartGameScreen updateNumber={updateNumber} updateScreen={updateScreen} />
-            )}
-            {screen === SCREENS.GAME_SCREEN && (
-              <GameScreen pickedNumber={pickedNumber} updateScreen={updateScreen} />
-            )}
-          </SafeAreaView>
+          <SafeAreaView style={styles.rootScreen}>{currentScreen[screen]}</SafeAreaView>
         </ImageBackground>
       </LinearGradient>
     </>
