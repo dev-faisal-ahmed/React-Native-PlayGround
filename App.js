@@ -1,19 +1,21 @@
-import { View, Text, StyleSheet } from "react-native";
+import { CategoriesScreen } from "./src/screens/category-screen/CategoriesScreen";
+import { StatusBar } from "expo-status-bar";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { MealOverviewScreen } from "./src/screens/meal-overview-screen/MealOverviewScreen";
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <>
-      <View style={styles.appContainer}>
-        <Text style={styles.text}>Hey There!!</Text>
-      </View>
+      <StatusBar style="dark" />
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="MealsCategories" component={CategoriesScreen} />
+          <Stack.Screen name="MealOverview" component={MealOverviewScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  appContainer: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  text: { textAlign: "center" },
-});
